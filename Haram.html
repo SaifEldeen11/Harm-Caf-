@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="ar-en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>هرم | Haram Café</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>tailwind.config = { theme: { extend: { colors: { primary: '#4A3428', secondary: '#FFF5E6' }, borderRadius: { 'none': '0px', 'sm': '4px', DEFAULT: '8px', 'md': '12px', 'lg': '16px', 'xl': '20px', '2xl': '24px', '3xl': '32px', 'full': '9999px', 'button': '8px' } } } }</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+    <style>
+        :where([class^="ri-"])::before {
+            content: "\f3c2";
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #FFF5E6;
+        }
+
+        .arabic {
+            font-family: 'Amiri', serif;
+            direction: rtl;
+        }
+
+        .menu-item {
+            position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(74, 52, 40, 0.1);
+        }
+
+        .tab-button {
+            transition: all 0.3s ease;
+        }
+
+        .tab-button:hover:not(.active) {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(74, 52, 40, 0.1);
+        }
+
+        .menu-category {
+            transition: opacity 0.3s ease;
+        }
+
+        .menu-category.hidden {
+            opacity: 0;
+            display: none;
+        }
+
+        .menu-category:not(.hidden) {
+            opacity: 1;
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .contact-item {
+            transition: transform 0.3s ease;
+        }
+
+        .contact-item:hover {
+            transform: translateY(-2px);
+        }
+
+        .menu-item::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 50%;
+            border-bottom: 1px dashed #D1BCA7;
+            z-index: 1;
+        }
+
+        .item-name,
+        .item-price {
+            background-color: #FFF5E6;
+            z-index: 2;
+            position: relative;
+        }
+
+        .tab-button.active {
+            background-color: #4A3428;
+            color: #FFF5E6;
+        }
+
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .custom-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 30px;
+        }
+
+        .custom-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #E6D5C3;
+            transition: .4s;
+            border-radius: 30px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked+.slider {
+            background-color: #4A3428;
+        }
+
+        input:checked+.slider:before {
+            transform: translateX(30px);
+        }
+    </style>
+</head>
+
+<body class="min-h-screen">
+    <!-- Header -->
+    <header class="bg-primary text-secondary py-4 px-6 sticky top-0 z-50 shadow-md">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="w-10 h-10 flex items-center justify-center">
+                <i class="ri-menu-line ri-xl"></i>
+            </div>
+            <div class="text-center">
+                <h1 class="text-3xl font-['Pacifico'] tracking-wider">هرم | Haram</h1>
+            </div>
+            <div class="w-10 h-10 flex items-center justify-center">
+                <i class="ri-phone-line ri-xl"></i>
+            </div>
+        </div>
+    </header>
+    <!-- Hero Section -->
+    <section class="relative py-16 overflow-hidden"
+        style="background-image: url('https://readdy.ai/api/search-image?query=A%20cozy%20caf%C3%A9%20interior%20with%20warm%20lighting%2C%20wooden%20tables%2C%20comfortable%20seating%2C%20and%20coffee-themed%20decor.%20The%20atmosphere%20is%20inviting%20with%20soft%20brown%20tones%2C%20cream-colored%20walls%2C%20and%20light%20beige%20accents.%20Coffee%20cups%20and%20pastries%20are%20artistically%20arranged%20on%20rustic%20wooden%20surfaces.%20The%20lighting%20creates%20a%20warm%2C%20welcoming%20ambiance%20perfect%20for%20a%20small%20caf%C3%A9.&width=1200&height=600&seq=cafe123&orientation=landscape'); background-size: cover; background-position: center;">
+        <div class="absolute inset-0 bg-primary bg-opacity-70"></div>
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="flex flex-col items-center text-center">
+                <h2 class="text-4xl md:text-5xl font-bold text-secondary mb-6">Welcome to هرم Café</h2>
+                <p class="text-xl text-secondary mb-8 max-w-2xl">Experience the perfect blend of traditional flavors and
+                    modern comfort in our cozy café atmosphere.</p>
+                <div class="flex space-x-4">
+                    <a href="#menu"
+                        class="bg-secondary text-primary px-6 py-3 rounded-button font-medium hover:bg-opacity-90 transition whitespace-nowrap">View
+                        Menu</a>
+                    <a href="#contact"
+                        class="bg-transparent border-2 border-secondary text-secondary px-6 py-3 rounded-button font-medium hover:bg-secondary hover:bg-opacity-20 transition whitespace-nowrap">Contact
+                        Us</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Menu Section -->
+    <section id="menu" class="py-16 bg-secondary">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-primary mb-2">Our Menu | قائمتنا</h2>
+                <p class="text-primary opacity-80">Discover our delicious offerings</p>
+            </div>
+            <!-- Menu Categories Tabs -->
+            <div class="flex flex-wrap justify-center mb-10 gap-2">
+                <button class="tab-button active px-4 py-2 rounded-full bg-primary text-secondary whitespace-nowrap"
+                    data-category="hot-drinks">
+                    Hot Drinks | مشروبات ساخنة
+                </button>
+                <button
+                    class="tab-button px-4 py-2 rounded-full bg-[#E6D5C3] text-primary hover:bg-opacity-80 whitespace-nowrap"
+                    data-category="cold-drinks">
+                    Cold Drinks | مشروبات باردة
+                </button>
+                <button
+                    class="tab-button px-4 py-2 rounded-full bg-[#E6D5C3] text-primary hover:bg-opacity-80 whitespace-nowrap"
+                    data-category="match-review">
+                    Match Review | مشاهدة المباريات
+                </button>
+                <button
+                    class="tab-button px-4 py-2 rounded-full bg-[#E6D5C3] text-primary hover:bg-opacity-80 whitespace-nowrap"
+                    data-category="sandwiches">
+                    Sandwiches | ساندوتشات
+                </button>
+                <button
+                    class="tab-button px-4 py-2 rounded-full bg-[#E6D5C3] text-primary hover:bg-opacity-80 whitespace-nowrap"
+                    data-category="juices">
+                    Juices | عصائر طبيعية
+                </button>
+                <button
+                    class="tab-button px-4 py-2 rounded-full bg-[#E6D5C3] text-primary hover:bg-opacity-80 whitespace-nowrap"
+                    data-category="ice-cream">
+                    Ice Cream | ايس كريم
+                </button>
+                <button
+                    class="tab-button px-4 py-2 rounded-full bg-[#E6D5C3] text-primary hover:bg-opacity-80 whitespace-nowrap"
+                    data-category="waffles">
+                    Waffles | وافل
+                </button>
+            </div>
+            <!-- Menu Content -->
+            <div class="bg-white rounded-lg shadow-lg p-6 md:p-8">
+                <div class="menu-category active" id="hot-drinks">
+                    <div class="flex items-center mb-6">
+                        <div
+                            class="w-10 h-10 flex items-center justify-center bg-primary rounded-full text-secondary mr-3">
+                            <i class="ri-cup-line"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-primary">Hot Drinks | مشروبات ساخنة</h3>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="menu-item flex justify-between items-center">
+                            <span class="item-name pr-2">Tea</span>
+                            <span class="item-price px-3">10 LE</span>
+                            <span class="item-name pl-2 arabic">شاي</span>
+                        </div>
+                        <div class="menu-item flex justify-between items-center">
+                            <span class="item-name pr-2">Nescafe</span>
+                            <span class="item-price px-3">15 LE</span>
+                            <span class="item-name pl-2 arabic">نسكافيه</span>
+                        </div>
+                        <div class="menu-item flex justify-between items-center">
+                            <span class="item-name pr-2">Hibiscus</span>
+                            <span class="item-price px-3">10 LE</span>
+                            <span class="item-name pl-2 arabic">كركديه</span>
+                        </div>
+                        <div class="menu-item flex justify-between items-center">
+                            <span class="item-name pr-2">Mint</span>
+                            <span class="item-price px-3">10 LE</span>
+                            <span class="item-name pl-2 arabic">نعناع</span>
+                        </div>
+                        <div class="menu-item flex justify-between items-center">
+                            <span class="item-name pr-2">Coffee</span>
+                            <span class="item-price px-3">12 LE</span>
+                            <span class="item-name pl-2 arabic">قهوة</span>
+                        </div>
+                        <div class="menu-item flex justify-between items-center">
+                            <span class="item-name pr-2">Double Coffee</span>
+                            <span class="item-price px-3">20 LE</span>
+                            <span class="item-name pl-2 arabic">قهوة دوبل</span>
+                        </div>
+                        <div class="menu-item flex justify-between items-center">
+                            <span class="item-name pr-2">French Coffee</span>
+                            <span class="item-price px-3">18 LE</span>
+                            <span class="item-name pl-2 arabic">قهوة فرنساوي</span>
+                        </div>
+                        <div class="menu-item flex justify-between items-center">
+                            <span class="item-name pr-2">Hazelnut Coffee</span>
+                            <span class="item-price px-3">22 LE</span>
+                            <span class="item-name pl-2 arabic">قهوة بندق</span>
+                        </div>
+                        <div class="menu-item flex justify-between items-center">
+                            <span class="item-name pr-2">Coffee Mix</span>
+                            <span class="item-price px-3">18 LE</span>
+                            <span class="item-name pl-2 arabic">كوفي ميكس</span>
+                        </div>
+                        <div class="menu-item flex justify-between items-center">
+                            <span class="item-name pr-2">Coffee Mix with Milk</span>
+                            <span class="item-price px-3">20 LE</span>
+                            <span class="item-name pl-2 arabic">كوفي ميكس لبن</span>
+                        </div>
+                        <div class="menu-item flex justify-between items-center">
+                            <span class="item-name pr-2">Black Nescafe</span>
+                            <span class="item-price px-3">15 LE</span>
+                            <span class="item-name pl-2 arabic">نسكافيه بلاك</span>
+                        </div>
+                        <div class="menu-item flex justify-between items-center">
+                            <span class="item-name pr-2">Nescafe with Milk</span>
+                            <span class="item-price px-3">18 LE</span>
+                            <span class="item-name pl-2 arabic">نسكافيه لبن</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cold Drinks -->
+                <div class="menu-category hidden" id="cold-drinks">
+                    <div class="flex items-center mb-6">
+                        <div
+                            class="w-10 h-10 flex items-center justify-center bg-primary rounded-full text-secondary mr-3">
+                            <i class="ri-ice-cream-line"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-primary">Cold Drinks | مشروبات باردة</h3>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="menu-item flex justify-between items-center">
+                            <span class="item-name pr-2">Milkshake</span>
+                            <span class="item-price px-3">35 LE</span>
+                            <span class="item-name pl-2 arabic">ميلك تشيك</span>
+                        </div>
+                        <div class="menu-item flex justify-between items-center">
+                            <span class="item-name pr-2">Iced Coffee</span>
+                            <span class="item-price px-3">30 LE</span>
+                            <span class="item-name pl-2 arabic">ايس كوفي</span>
+                        </div>
+                        <div class="menu-item flex justify-between items-center">
+                            <span class="item-name pr-2">Sunshine</span>
+                            <span class="item-price px-3">28 LE</span>
+                            <span class="item-name pl-2 arabic">صن شاين</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Juices -->
+                <div class="menu-category hidden" id="juices">
+                    <div class="flex items-center mb-6">
+                        <div
+                            class="w-10 h-10 flex items-center justify-center bg-primary rounded-full text-secondary mr-3">
+                            <i class="ri-goblet-line"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-primary">Juices | عصائر طبيعية</h3>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="menu-item flex justify-between items-center">
+                            <span class="item-name pr-2">Mango</span>
+                            <span class="item-price px-3">28 LE</span>
+                            <span class="item-name pl-2 arabic">مانجو</span>
+                        </div>
+                        <div class="menu-item flex justify-between items-center">
+                            <span class="item-name pr-2">Strawberry</span>
+                            <span class="item-price px-3">28 LE</span>
+                            <span class="item-name pl-2 arabic">فراولة</span>
+                        </div>
+                        <div class="menu-item flex justify-between items-center">
+                            <span class="item-name pr-2">Strawberry with Milk</span>
+                            <span class="item-price px-3">30 LE</span>
+                            <span class="item-name pl-2 arabic">فراولة باللبن</span>
+                        </div>
+                        <div class="menu-item flex justify-between items-center">
+                            <span class="item-name pr-2">Guava</span>
+                            <span class="item-price px-3">26 LE</span>
+                            <span class="item-name pl-2 arabic">جوافة</span>
+                        </div>
+                        <div class="menu-item flex justify-between items-center">
+                            <span class="item-name pr-2">Guava with Milk</span>
+                            <span class="item-price px-3">28 LE</span>
+                            <span class="item-name pl-2 arabic">جوافة باللبن</span>
+                        </div>
+                        <div class="menu-item flex justify-between items-center">
+                            <span class="item-name pr-2">Dates with Milk</span>
+                            <span class="item-price px-3">35 LE</span>
+                            <span class="item-name pl-2 arabic">بلح باللبن</span>
+                        </div>
+                        <div class="menu-item flex justify-between items-center">
+                            <span class="item-name pr-2">Grapes</span>
+                            <span class="item-price px-3">28 LE</span>
+                            <span class="item-name pl-2 arabic">عنب</span>
+                        </div>
+                        <div class="menu-item flex justify-between items-center">
+                            <span class="item-name pr-2">Lemon</span>
+                            <span class="item-price px-3">20 LE</span>
+                            <span class="item-name pl-2 arabic">ليمون</span>
+                        </div>
+                        <div class="menu-item flex justify-between items-center">
+                            <span class="item-name pr-2">Lemon Mint</span>
+                            <span class="item-price px-3">22 LE</span>
+                            <span class="item-name pl-2 arabic">ليمون نعناع</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ice Cream -->
+                <div class="menu-category hidden" id="ice-cream">
+                    <div class="flex items-center mb-6">
+                        <div
+                            class="w-10 h-10 flex items-center justify-center bg-primary rounded-full text-secondary mr-3">
+                            <i class="ri-cake-line"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-primary">Ice Cream | ايس كريم <span
+                                class="text-base font-normal">(per scoop)</span></h3>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="menu-item flex justify-between items-center">
+                            <span class="item-name pr-2">Vanilla</span>
+                            <span class="item-price px-3">15 LE</span>
+                            <span class="item-name pl-2 arabic">فانيليا</span>
+                        </div>
+                        <div class="menu-item flex justify-between items-center">
+                            <span class="item-name pr-2">Chocolate</span>
+                            <span class="item-price px-3">15 LE</span>
+                            <span class="item-name pl-2 arabic">شيكولاتة</span>
+                        </div>
+                        <div class="menu-item flex justify-between items-center">
+                            <span class="item-name pr-2">Mango</span>
+                            <span class="item-price px-3">15 LE</span>
+                            <span class="item-name pl-2 arabic">مانجو</span>
+                        </div>
+                        <div class="menu-item flex justify-between items-center">
+                            <span class="item-name pr-2">Strawberry</span>
+                            <span class="item-price px-3">15 LE</span>
+                            <span class="item-name pl-2 arabic">فراولة</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Match Review -->
+                <div class="menu-category hidden" id="match-review">
+                    <div class="flex items-center mb-6">
+                        <div
+                            class="w-10 h-10 flex items-center justify-center bg-primary rounded-full text-secondary mr-3">
+                            <i class="ri-tv-line"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-primary">Match Review | مشاهدة المباريات</h3>
+                    </div>
+                    <div class="bg-white rounded-lg p-6 shadow-sm mb-8">
+                        <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                            <div class="flex-1">
+                                <h4 class="text-xl font-semibold text-primary mb-4">Today's Matches | مباريات اليوم</h4>
+                                <div class="space-y-4" id="matchList">
+                                    <!-- Matches will be populated here -->
+                                </div>
+                            </div>
+                            <div class="flex-1">
+                                <div class="bg-[#E6D5C3] rounded-lg p-6">
+                                    <h4 class="text-lg font-semibold text-primary mb-4">Book Your Seat | احجز مقعدك</h4>
+                                    <div class="space-y-4">
+                                        <div class="flex items-center justify-between">
+                                            <span class="text-primary">Entry Fee | رسوم الدخول</span>
+                                            <span class="text-primary font-semibold">10 LE</span>
+                                        </div>
+                                        <div class="flex items-center justify-between">
+                                            <span class="text-primary">Available Seats | المقاعد المتاحة</span>
+                                            <span class="text-primary font-semibold" id="availableSeats">20</span>
+                                        </div>
+                                        <button onclick="bookSeat()"
+                                            class="w-full bg-primary text-secondary py-2 rounded-button hover:bg-primary/90 transition-all duration-300 hover:scale-105 transform active:scale-95">
+                                            Book Now | احجز الآن
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Waffles -->
+                <div class="menu-category hidden" id="waffles">
+                    <div class="flex items-center mb-6">
+                        <div
+                            class="w-10 h-10 flex items-center justify-center bg-primary rounded-full text-secondary mr-3">
+                            <i class="ri-cake-3-line"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-primary">Waffle | وافل</h3>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="menu-item flex justify-between items-center">
+                            <span class="item-name pr-2">Nutella</span>
+                            <span class="item-price px-3">35 LE</span>
+                            <span class="item-name pl-2 arabic">نوتيلا</span>
+                        </div>
+                        <div class="menu-item flex justify-between items-center">
+                            <span class="item-name pr-2">White Chocolate</span>
+                            <span class="item-price px-3">35 LE</span>
+                            <span class="item-name pl-2 arabic">شيكولاتة بيضاء</span>
+                        </div>
+                        <div class="menu-item flex justify-between items-center">
+                            <span class="item-name pr-2">Add Ice Cream</span>
+                            <span class="item-price px-3">+10 LE</span>
+                            <span class="item-name pl-2 arabic">ايس كريم (للكورة)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sandwiches -->
+                <div class="menu-category hidden" id="sandwiches">
+                    <div class="flex items-center mb-6">
+                        <div
+                            class="w-10 h-10 flex items-center justify-center bg-primary rounded-full text-secondary mr-3">
+                            <i class="ri-sandwich-line"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-primary">Sandwiches | ساندوتشات</h3>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="menu-item flex justify-between items-center">
+                            <span class="item-name pr-2">Pane (Natural)</span>
+                            <span class="item-price px-3">35 LE</span>
+                            <span class="item-name pl-2 arabic">بانيه طبيعي</span>
+                        </div>
+                        <div class="menu-item flex justify-between items-center">
+                            <span class="item-name pr-2">Strips</span>
+                            <span class="item-price px-3">35 LE</span>
+                            <span class="item-name pl-2 arabic">ستربس</span>
+                        </div>
+                        <div class="menu-item flex justify-between items-center">
+                            <span class="item-name pr-2">Hot Dog</span>
+                            <span class="item-price px-3">25 LE</span>
+                            <span class="item-name pl-2 arabic">هوت دوج</span>
+                        </div>
+                        <div class="menu-item flex justify-between items-center">
+                            <span class="item-name pr-2">Burger</span>
+                            <span class="item-price px-3">30 LE</span>
+                            <span class="item-name pl-2 arabic">برجر</span>
+                        </div>
+                        <div class="menu-item flex justify-between items-center">
+                            <span class="item-name pr-2">Burger with Egg</span>
+                            <span class="item-price px-3">35 LE</span>
+                            <span class="item-name pl-2 arabic">برجر بالبيض</span>
+                        </div>
+                        <div class="menu-item flex justify-between items-center">
+                            <span class="item-name pr-2">Turkey Burger</span>
+                            <span class="item-price px-3">38 LE</span>
+                            <span class="item-name pl-2 arabic">برجر رومي</span>
+                        </div>
+                        <div class="menu-item flex justify-between items-center">
+                            <span class="item-name pr-2">Halawa (Sesame Sweet)</span>
+                            <span class="item-price px-3">15 LE</span>
+                            <span class="item-name pl-2 arabic">حلاوة</span>
+                        </div>
+                        <div class="menu-item flex justify-between items-center">
+                            <span class="item-name pr-2">Halawa with Cream</span>
+                            <span class="item-price px-3">20 LE</span>
+                            <span class="item-name pl-2 arabic">حلاوة بالقشطة</span>
+                        </div>
+                        <div class="menu-item flex justify-between items-center">
+                            <span class="item-name pr-2">Jam</span>
+                            <span class="item-price px-3">15 LE</span>
+                            <span class="item-name pl-2 arabic">مربى</span>
+                        </div>
+                        <div class="menu-item flex justify-between items-center">
+                            <span class="item-name pr-2">Jam with Cream</span>
+                            <span class="item-price px-3">20 LE</span>
+                            <span class="item-name pl-2 arabic">مربى بالقشطة</span>
+                        </div>
+                        <div class="menu-item flex justify-between items-center">
+                            <span class="item-name pr-2">Farm Fries</span>
+                            <span class="item-price px-3">20 LE</span>
+                            <span class="item-name pl-2 arabic">باكت فارم</span>
+                        </div>
+                        <div class="menu-item flex justify-between items-center">
+                            <span class="item-name pr-2">Indomie</span>
+                            <span class="item-price px-3">20 LE</span>
+                            <span class="item-name pl-2 arabic">اندومي</span>
+                        </div>
+                    </div>
+                </div>
+    </section>
+    <!-- Contact Section -->
+    <section id="contact" class="py-16 bg-[#E6D5C3]">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-primary mb-2">Contact Us | اتصل بنا</h2>
+                <p class="text-primary opacity-80">Order now or visit us</p>
+            </div>
+            <div class="bg-white rounded-lg shadow-lg p-8 max-w-2xl mx-auto mb-8">
+                <div class="flex items-center justify-center">
+                    <div class="text-center">
+                        <div class="w-24 h-24 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="ri-user-smile-line ri-2x text-secondary"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-primary mb-1">Mr. Mahmoud Samir | محمود سمير</h3>
+                        <p class="text-primary/80 mb-2">Café Manager | مدير المقهى</p>
+                        <div class="flex items-center justify-center space-x-3">
+                            <div
+                                class="w-8 h-8 flex items-center justify-center bg-primary rounded-full text-secondary">
+                                <i class="ri-phone-line"></i>
+                            </div>
+                            <a href="tel:+201234567890" class="text-primary hover:text-primary/80">+20 123
+                                456 7890</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow-lg p-8 max-w-2xl mx-auto">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-xl font-semibold text-primary mb-4">Phone Numbers | أرقام الهاتف
+                        </h3>
+                        <ul class="space-y-4">
+                            <li class="flex items-center">
+                                <div
+                                    class="w-10 h-10 flex items-center justify-center bg-primary rounded-full text-secondary mr-3">
+                                    <i class="ri-phone-line"></i>
+                                </div>
+                                <a href="tel:+201234567890" class="text-primary hover:text-primary/80">+20
+                                    123 456
+                                    7890</a>
+                            </li>
+                            <li class="flex items-center">
+                                <div
+                                    class="w-10 h-10 flex items-center justify-center bg-primary rounded-full text-secondary mr-3">
+                                    <i class="ri-phone-line"></i>
+                                </div>
+                                <a href="tel:+201098765432" class="text-primary hover:text-primary/80">+20
+                                    109 876
+                                    5432</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-primary mb-4">Address | العنوان</h3>
+                        <div class="flex items-start">
+                            <div
+                                class="w-10 h-10 flex items-center justify-center bg-primary rounded-full text-secondary mr-3 mt-1">
+                                <i class="ri-map-pin-line"></i>
+                            </div>
+                            <div>
+                                <p class="text-primary mb-1">El Masnaa El Harby St. - Banha - Caravan 15</p>
+                                <p class="text-primary arabic">شارع المصنع الحربي -بنها -كارافان 15</p>
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-semibold text-primary mb-4 mt-6">Hours | ساعات العمل</h3>
+                        <div class="flex items-start">
+                            <div
+                                class="w-10 h-10 flex items-center justify-center bg-primary rounded-full text-secondary mr-3 mt-1">
+                                <i class="ri-time-line"></i>
+                            </div>
+                            <div>
+                                <p class="text-primary mb-1">Daily: 8:00 AM - 11:00 PM</p>
+                                <p class="text-primary arabic">يوميًا: ٨:٠٠ ص - ١١:٠٠ م</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </section>
+    <!-- Footer -->
+    <footer class="bg-primary text-secondary py-8">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <h2 class="text-2xl font-['Pacifico'] mb-2">هرم | Haram</h2>
+                    <p class="opacity-80">Cozy café with delicious treats</p>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#" class="hover:text-[#E6D5C3] transition-all duration-300 hover:scale-110">
+                        <div class="w-10 h-10 flex items-center justify-center">
+                            <i class="ri-facebook-fill ri-lg"></i>
+                        </div>
+                    </a>
+                    <a href="#" class="hover:text-[#E6D5C3] transition">
+                        <div class="w-10 h-10 flex items-center justify-center">
+                            <i class="ri-instagram-line ri-lg"></i>
+                        </div>
+                    </a>
+                    <a href="#" class="hover:text-[#E6D5C3] transition">
+                        <div class="w-10 h-10 flex items-center justify-center">
+                            <i class="ri-whatsapp-line ri-lg"></i>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="border-t border-secondary/30 mt-6 pt-6 text-center">
+                <p>© 2025 هرم Café. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    <script id="interactiveFeatures">
+        document.addEventListener('DOMContentLoaded', function () {
+            const menuItems = document.querySelectorAll('.menu-item');
+            menuItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const price = item.querySelector('.item-price').textContent;
+                    const name = item.querySelector('.item-name').textContent;
+
+                    const orderPopup = document.createElement('div');
+                    orderPopup.className = 'fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-6 rounded-lg shadow-xl z-50 w-80';
+                    orderPopup.innerHTML = `
+      <div class="text-center">
+        <h3 class="text-xl font-bold text-primary mb-4">${name}</h3>
+        <p class="text-primary mb-4">${price}</p>
+        <div class="flex items-center justify-center gap-4 mb-6">
+          <button class="quantity-btn bg-primary text-secondary w-8 h-8 rounded-full">-</button>
+          <span class="quantity text-primary text-lg">1</span>
+          <button class="quantity-btn bg-primary text-secondary w-8 h-8 rounded-full">+</button>
+        </div>
+        <button class="add-to-cart bg-primary text-secondary px-6 py-2 rounded-button w-full mb-2">Add to Cart | أضف للسلة</button>
+        <button class="cancel text-primary">Cancel | إلغاء</button>
+      </div>
+    `;
+
+                    const overlay = document.createElement('div');
+                    overlay.className = 'fixed inset-0 bg-black bg-opacity-50 z-40';
+
+                    document.body.appendChild(overlay);
+                    document.body.appendChild(orderPopup);
+
+                    let quantity = 1;
+                    const quantityBtns = orderPopup.querySelectorAll('.quantity-btn');
+                    const quantityDisplay = orderPopup.querySelector('.quantity');
+
+                    quantityBtns.forEach((btn, index) => {
+                        btn.addEventListener('click', () => {
+                            if (index === 0 && quantity > 1) quantity--;
+                            if (index === 1) quantity++;
+                            quantityDisplay.textContent = quantity;
+                        });
+                    });
+
+                    orderPopup.querySelector('.cancel').addEventListener('click', () => {
+                        orderPopup.remove();
+                        overlay.remove();
+                    });
+
+                    orderPopup.querySelector('.add-to-cart').addEventListener('click', () => {
+                        const notification = document.createElement('div');
+                        notification.className = 'fixed bottom-4 right-4 bg-primary text-secondary py-2 px-4 rounded-lg shadow-lg';
+                        notification.textContent = `Added ${quantity} item(s) to cart | تمت الإضافة إلى السلة`;
+                        document.body.appendChild(notification);
+
+                        setTimeout(() => {
+                            notification.style.opacity = '0';
+                            setTimeout(() => notification.remove(), 500);
+                        }, 2000);
+
+                        orderPopup.remove();
+                        overlay.remove();
+                    });
+                });
+            });
+        });
+    </script>
+    <script id="matchReview">
+        document.addEventListener('DOMContentLoaded', function () {
+            const matches = [
+                { time: '18:00', teams: 'Al Ahly vs Zamalek | الأهلي ضد الزمالك', status: 'Upcoming | قادمة' },
+                { time: '20:30', teams: 'Pyramids vs Future | بيراميدز ضد فيوتشر', status: 'Upcoming | قادمة' },
+                { time: '22:00', teams: 'El Gouna vs Ceramica | الجونة ضد سيراميكا', status: 'Upcoming | قادمة' }
+            ];
+            const matchList = document.getElementById('matchList');
+            let availableSeats = 20;
+            function updateMatchList() {
+                matchList.innerHTML = '';
+                matches.forEach(match => {
+                    const matchDiv = document.createElement('div');
+                    matchDiv.className = 'flex items-center justify-between p-4 bg-secondary rounded-lg';
+                    matchDiv.innerHTML = `
+<div>
+<div class="text-primary font-semibold">${match.time}</div>
+<div class="text-primary">${match.teams}</div>
+</div>
+<div class="text-primary/70">${match.status}</div>
+`;
+                    matchList.appendChild(matchDiv);
+                });
+            }
+            updateMatchList();
+            window.bookSeat = function () {
+                if (availableSeats > 0) {
+                    availableSeats--;
+                    document.getElementById('availableSeats').textContent = availableSeats;
+                    const notification = document.createElement('div');
+                    notification.className = 'fixed bottom-4 right-4 bg-primary text-secondary py-2 px-4 rounded-lg shadow-lg transition-all duration-500 transform translate-y-0 opacity-100';
+                    notification.style.animation = 'slideIn 0.5s ease';
+                    notification.textContent = 'Booking confirmed! | تم تأكيد الحجز!';
+                    document.body.appendChild(notification);
+                    const style = document.createElement('style');
+                    style.textContent = `
+@keyframes slideIn {
+from {
+transform: translateY(100%);
+opacity: 0;
+}
+to {
+transform: translateY(0);
+opacity: 1;
+}
+}`;
+                    document.head.appendChild(style);
+                    setTimeout(() => {
+                        notification.style.opacity = '0';
+                        setTimeout(() => notification.remove(), 500);
+                    }, 3000);
+                } else {
+                    const notification = document.createElement('div');
+                    notification.className = 'fixed bottom-4 right-4 bg-red-500 text-white py-2 px-4 rounded-lg shadow-lg transition-opacity duration-500';
+                    notification.textContent = 'No seats available! | لا توجد مقاعد متاحة!';
+                    document.body.appendChild(notification);
+                    setTimeout(() => {
+                        notification.style.opacity = '0';
+                        setTimeout(() => notification.remove(), 500);
+                    }, 3000);
+                }
+            };
+        });
+    </script>
+    <script id="animations">
+        document.addEventListener('DOMContentLoaded', function () {
+            const menuItems = document.querySelectorAll('.menu-item');
+            const contactItems = document.querySelectorAll('.contact-item');
+            function addHoverEffect(elements) {
+                elements.forEach(item => {
+                    item.addEventListener('mouseenter', () => {
+                        item.style.transform = 'translateY(-5px)';
+                        item.style.transition = 'transform 0.3s ease';
+                    });
+
+                    item.addEventListener('mouseleave', () => {
+                        item.style.transform = 'translateY(0)';
+                    });
+                });
+            }
+            addHoverEffect(menuItems);
+            addHoverEffect(contactItems);
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+            document.querySelectorAll('section').forEach(section => {
+                section.style.opacity = '0';
+                section.style.transform = 'translateY(20px)';
+                section.style.transition = 'all 0.6s ease-out';
+                observer.observe(section);
+            });
+        });
+    </script>
+    <script id="tabSwitcher">
+        document.addEventListener('DOMContentLoaded', function () {
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const menuCategories = document.querySelectorAll('.menu-category');
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    // Remove active class from all buttons
+                    tabButtons.forEach(btn => {
+                        btn.classList.remove('active');
+                        btn.classList.add('bg-[#E6D5C3]');
+                        btn.classList.remove('bg-primary');
+                        btn.classList.add('text-primary');
+                        btn.classList.remove('text-secondary');
+                    });
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    this.classList.remove('bg-[#E6D5C3]');
+                    this.classList.add('bg-primary');
+                    this.classList.remove('text-primary');
+                    this.classList.add('text-secondary');
+                    // Hide all menu categories
+                    menuCategories.forEach(category => {
+                        category.classList.add('hidden');
+                    });
+                    // Show the selected category
+                    const categoryId = this.getAttribute('data-category');
+                    document.getElementById(categoryId).classList.remove('hidden');
+                });
+            });
+        });
+    </script>
+    <script id="coffeeBeansAnimation">
+        document.addEventListener('DOMContentLoaded', function () {
+            // Create a canvas overlay for the hero section
+            const heroSection = document.querySelector('section.relative');
+            const canvas = document.createElement('canvas');
+            canvas.style.position = 'absolute';
+            canvas.style.top = 0;
+            canvas.style.left = 0;
+            canvas.style.width = '100%';
+            canvas.style.height = '100%';
+            canvas.style.pointerEvents = 'none';
+            canvas.style.zIndex = 2;
+            heroSection.appendChild(canvas);
+
+            // Adjust canvas size on resize
+            function resizeCanvas() {
+                canvas.width = heroSection.offsetWidth;
+                canvas.height = heroSection.offsetHeight;
+            }
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+
+            // Coffee bean image (SVG path for performance)
+            const beanSVG = `<svg width="24" height="24" viewBox="0 0 24 24"><ellipse cx="12" cy="12" rx="8" ry="12" fill="#4A3428"/><path d="M12 4c2 4 2 12 0 16" stroke="#FFF5E6" stroke-width="2" fill="none"/></svg>`;
+
+            // Bean objects
+            const beans = Array.from({ length: 12 }).map(() => ({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                speed: 0.5 + Math.random() * 1.2,
+                size: 18 + Math.random() * 16,
+                angle: Math.random() * Math.PI * 2,
+                swing: 10 + Math.random() * 10
+            }));
+
+            // Draw beans
+            function drawBeans(ctx) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                beans.forEach(bean => {
+                    // Animate swing
+                    const swingX = Math.sin(bean.angle) * bean.swing;
+                    // Draw SVG as image
+                    const img = new window.Image();
+                    img.src = 'data:image/svg+xml;utf8,' + encodeURIComponent(beanSVG);
+                    ctx.save();
+                    ctx.globalAlpha = 0.7;
+                    ctx.translate(bean.x + swingX, bean.y);
+                    ctx.rotate(Math.sin(bean.angle) * 0.2);
+                    ctx.drawImage(img, -bean.size / 2, -bean.size / 2, bean.size, bean.size);
+                    ctx.restore();
+                });
+            }
+
+            // Animate beans
+            function animate() {
+                const ctx = canvas.getContext('2d');
+                beans.forEach(bean => {
+                    bean.y += bean.speed;
+                    bean.angle += 0.01 + Math.random() * 0.01;
+                    if (bean.y > canvas.height + 30) {
+                        bean.y = -30;
+                        bean.x = Math.random() * canvas.width;
+                    }
+                });
+                drawBeans(ctx);
+                requestAnimationFrame(animate);
+            }
+
+            animate();
+        });
+    </script>
+</body>
+
+</html>
